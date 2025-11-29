@@ -1,0 +1,12 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/gy/桌面/19ros校内赛/例程/第一轮分站赛/ustb_19th_smartcar/devel/lib/python3/dist-packages",
+        "/home/gy/20ROS/darknet_ros_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/gy/桌面/19ros校内赛/例程/第一轮分站赛/ustb_19th_smartcar/devel/lib/python3/dist-packages",
+        "/home/gy/20ROS/darknet_ros_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
+}

@@ -1,0 +1,7 @@
+<launch>
+    <param name ="/use_sim_time" value="true"/>
+    <node name="accum_timer" pkg="ucar_accumtimer" type="AccumTimer.py" output="screen">
+        <rosparam file="$(find ucar_accumtimer)/config/AccumTimer.yaml" command="load" />
+    </node>
+    <param name="my_address" type="str" value="$(find ucar_accumtimer)/config/"/>
+</launch>

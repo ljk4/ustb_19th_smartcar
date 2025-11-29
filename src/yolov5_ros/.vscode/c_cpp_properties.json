@@ -1,0 +1,28 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/gy/桌面/19ros校内赛/例程/第一轮分站赛/ustb_19th_smartcar/devel/include/**",
+        "/home/gy/20ROS/darknet_ros_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/gy/20ROS/darknet_ros_ws/src/darknet_ros/darknet_ros/include/**",
+        "/home/gy/20ROS/darknet_ros_ws/src/lane_detect/include/**",
+        "/home/gy/桌面/19ros校内赛/例程/第一轮分站赛/ustb_19th_smartcar/src/mecanum_sim/nexus_4wd_mecanum_gazebo/include/**",
+        "/home/gy/20ROS/darknet_ros_ws/src/usb_cam/include/**",
+        "/home/gy/20ROS/darknet_ros_ws/src/yolov4_detection/include/**",
+        "/home/gy/20ROS/darknet_ros_ws/src/yolov5_detection/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

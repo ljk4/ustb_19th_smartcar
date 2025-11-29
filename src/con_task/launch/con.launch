@@ -1,0 +1,27 @@
+<launch>
+  <include file="$(find ucar_bringup)/launch/nav_start.launch" />
+  <include file="$(find ucar_accumtimer)/launch/AccumTimer.launch" />
+  <include file="$(find qr)/launch/qr.launch" />
+
+  <!-- 全局只保留 voice_root -->
+  <param name="voice_root" value="$(find con_task)"/>
+
+  <node name="ucar_commander"
+        pkg="ucar_commander"
+        type="ucar_commander.py"
+        output="screen"
+        required="true">
+    <!-- 以下全部变成私有参数（node 内读取 ~xxx） -->
+    <param name="intersection_1" value="[1.149, 0.269, -1.382]"/>
+    <param name="intersection_2" value="[1.810, -2.439, -1.382]"/>
+    <param name="intersection_3" value="[3.547, -1.250, 1.786]"/>
+    <param name="intersection_4" value="[3.090, 0.645, -2.941]"/>
+    <param name="pickup" value="[1.621, -1.680, -1.315]"/>
+    <param name="qr_station_up" value="[3.327, -1.763, -0.050]"/>
+    <param name="qr_station_down" value="[3.200, 0.477, 1.799]"/>
+    <param name="station_A" value="[2.606, 0.547, -2.949]"/>
+    <param name="station_B" value="[2.122, 0.423, -2.949]"/>
+    <param name="station_C" value="[1.655, 0.308, -2.944]"/>
+    <param name="end" value="[0.183, 0.026, -2.896]"/>
+  </node>
+</launch>

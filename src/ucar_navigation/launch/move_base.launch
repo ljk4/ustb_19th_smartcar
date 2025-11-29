@@ -1,0 +1,33 @@
+<launch>
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" clear_params="true">
+    <!-- 局部规划器配置 -->
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <param name="controller_frequency" value="12.0" />
+    <param name="controller_patience" value="12.0" />
+
+    <!-- 全局规划器配置 -->
+    <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+    <param name="planner_frequency" value="1.0" />
+    <param name="planner_patience" value="5.0" />
+
+    <!-- 恢复行为配置 -->
+    <param name="recovery_behavior_enabled" value="true" />
+    <param name="clearing_rotation_allowed" value="false" />
+    
+    <!-- 加载参数文件 -->
+    <rosparam file="$(find ucar_navigation)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find ucar_navigation)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find ucar_navigation)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ucar_navigation)/config/global_costmap_params.yaml" command="load" />
+    <!-- <rosparam file="$(find ucar_navigation)/config/global_planner_params.yaml" command="load" /> -->
+    <rosparam file="$(find ucar_navigation)/config/move_base_params.yaml" command="load" />
+    <rosparam file="$(find ucar_navigation)/config/teb_local_planner_params.yaml" command="load" />
+
+    <!-- 重映射主题 -->
+    <remap from="cmd_vel" to="cmd_vel" />
+    <remap from="odom" to="odom" />
+    <remap from="scan" to="scan" />
+  </node>
+</launch>
+
+

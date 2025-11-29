@@ -1,0 +1,41 @@
+<launch>
+  <include file="$(find final_task)/launch/gaz.launch" />
+  <include file="$(find ucar_bringup)/launch/static_tf.launch" />
+  <include file="$(find final_task)/launch/nav.launch" />
+  <include file="$(find ucar_accumtimer)/launch/AccumTimer.launch" />
+  <include file="$(find qr)/launch/qr.launch" />
+  <include file="$(find yolov5_ros)/launch/yolov5.launch" />
+  
+  <!-- 全局只保留 voice_root -->
+  <param name="voice_root" value="$(find final_task)"/>
+
+  <node name="ucar_commander"
+        pkg="final_task"
+        type="ucar_commander.py"
+        output="screen"
+        required="true">
+    <!-- 以下全部变成私有参数（node 内读取 ~xxx） -->
+    <param name="intersection_1" value="[-2.858, -0.057, 3.140]"/>
+    <param name="pickup" value="[-3.125, -0.023, -3.139]"/>
+    <param name="info_area" value="[-3.058, 2.092, 1.448]"/>
+    <param name="info_area_backup_1" value="[-3.104, 2.122, 1.018]"/>
+    <param name="info_area_backup_2" value="[-2.720, 2.077, 1.835]"/>
+    
+    <param name="intersection_2" value="[-2.747, 2.386, -0.001]"/>
+    <param name="intersection_3" value="[-1.188, 2.380, 0.002]"/>
+    
+    <param name="intersection_ac_left" value="[-1.202, 1.661, 1.606]"/>
+    <param name="shelf_a" value="[-1.899, 1.664, 3.137]"/>
+    <param name="shelf_c" value="[-0.467, 1.670, -0.001]"/>
+    
+    <param name="intersection_bd_left" value="[-1.170, 0.798, 1.580]"/>
+    <param name="shelf_b" value="[-1.904, 0.801, 3.141]"/>
+    <param name="shelf_d" value="[-0.517, 0.802, -0.001]"/>
+    
+    <param name="intersection_ac_right" value="[0.123, 1.642, -0.001]"/>
+    <param name="intersection_bd_right" value="[0.138, 0.766,-0.001]"/>
+    
+    <param name="intersection_4" value="[0.171, 2.924, 1.564]"/>
+    <param name="parking" value="[-3.223, 3.357,3.138]"/>
+  </node>
+</launch>

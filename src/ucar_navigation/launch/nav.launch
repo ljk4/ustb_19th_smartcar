@@ -1,0 +1,35 @@
+<launch>
+
+    <!-- 设置地图的配置文件 -->
+    <arg name="map" default="test.yaml" />
+    <arg name="initial_pose_x" default="0.15" />
+    <arg name="initial_pose_y" default="0.1" />
+    <arg name="initial_pose_a" default="-1.32" />
+    <arg name="open_rviz" default="true" />
+
+    <!-- 运行地图服务器，并且加载设置的地图-->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find ucar_navigation)/maps/$(arg map)">
+        <param name="frame_id" value="map"/>
+    </node>
+
+    <!-- 启动AMCL节点 -->
+    <include file="$(find ucar_navigation)/launch/amcl.launch">
+        <arg name="initial_pose_x" value="$(arg initial_pose_x)" />
+        <arg name="initial_pose_y" value="$(arg initial_pose_y)" />
+        <arg name="initial_pose_a" value="$(arg initial_pose_a)" />
+    </include>
+
+    <!-- 运行move_base节点 -->
+    <include file="$(find ucar_navigation)/launch/move_base.launch"/>
+
+    <!-- 运行rviz -->
+    <group if="$(arg open_rviz)">
+        <node pkg="rviz" type="rviz" name="rviz" required="true"
+              args="-d $(find ucar_navigation)/rviz/nav.rviz" />
+    </group>
+
+    <!-- 可选：发布静态变换
+    <node pkg="tf" type="static_transform_publisher" name="map_to_odom" 
+          args="0 0 0 0 0 0 map odom 100" /> -->
+
+</launch>

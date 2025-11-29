@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="use_sim_time" default="true" />
+  <arg name="gui" default="true" />
+  <arg name="headless" default="false" />
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find gazebo_pkg)/world/19th_final_empty.world"/> 
+    <arg name="debug" value="0" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="use_sim_time" value="$(arg use_sim_time)" />
+    <arg name="headless" value="$(arg headless)" />
+    <arg name="paused" value="false"/>
+  </include>
+
+<!-- Load robot description -->
+<include file="$(find nexus_4wd_mecanum_description)/launch/nexus_4wd_mecanum_description.launch" />
+
+  <!-- Spawn the robot -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -model nexus_4wd_mecanum -param robot_description -x -0.04 -y -0.25 -z 0.5 " />
+  <!-- 使用仿真时间 -->
+  <param name="/use_sim_time" value="true"/>
+
+  <!-- Cartographer 节点 -->
+  <node name="cartographer_node" pkg="cartographer_ros"
+        type="cartographer_node" args="
+          -configuration_directory $(find gazebo_pkg)/param
+          -configuration_basename hdl32.lua"
+        output="screen">
+    <!-- 重映射话题，与仿真对应 -->
+    <remap from="scan" to="/scan"/>
+  </node>
+
+  <!-- 栅格地图发布器 -->
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+        type="cartographer_occupancy_grid_node" args="-resolution 0.01"/>
+  <!-- Rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" required="true"
+        args="-d $(find cartographer_ros)/configuration_files/demo_2d.rviz"/>
+</launch>

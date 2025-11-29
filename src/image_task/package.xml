@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>image_task</name>
+  <version>0.0.1</version>
+  <description>
+    截图节点：按键盘‘s’保存当前 yolov5 检测画面，并打印物品数量与类别。
+  </description>
+  <maintainer email="your@email.com">Your Name</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>detection_msgs</build_depend>
+  <build_depend>cv_bridge</build_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>sensor_msgs</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+  <build_export_depend>detection_msgs</build_export_depend>
+  <build_export_depend>cv_bridge</build_export_depend>
+
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>detection_msgs</exec_depend>
+
+  <exec_depend>cv_bridge</exec_depend>
+  <!-- yolov5_ros 提供的消息，运行时才需要 -->
+  <exec_depend>yolov5_ros</exec_depend>
+</package>

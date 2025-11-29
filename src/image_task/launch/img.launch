@@ -1,0 +1,11 @@
+<launch>
+    <!-- <include file="$(find usb_cam)/launch/usb_cam.launch" /> -->
+    <!-- <include file="$(find video_publisher)/launch/play_video.launch" /> -->
+    <!-- <include file="$(find yolov5_ros)/launch/yolov5.launch" /> -->
+    <node name="save_detected_image_node"
+        pkg="image_task"
+        type="save_detected_image.py"
+        output="screen"
+        required="true"/>
+</launch>
+

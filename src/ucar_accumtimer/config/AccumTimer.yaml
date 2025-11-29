@@ -1,0 +1,13 @@
+odom_frame_id: odom #里程计坐标系
+base_frame_id: base_link #底盘坐标系
+map_frame_id: map #地图坐标系
+
+Area_num: 1 #区域数量
+Area_point1: #区域限制点1
+  [ 
+    [ 0.13,  -0.67],
+  ]
+Area_point2: #区域限制点2
+  [ 
+    [-0.67, -1.17],
+  ]

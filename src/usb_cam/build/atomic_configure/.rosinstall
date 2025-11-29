@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/iflytek/task_ws/src/usb_cam/build/devel/setup.sh
