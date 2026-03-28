@@ -43,7 +43,7 @@ def delete_model(model_name):
 if __name__ == "__main__":
     rospy.init_node('spawn_boards_by_qrcode_folder')
     timestamp = int(time.time())  # 用于生成唯一模型名
-    model_root_path = "/home/ljk/.gazebo/models/"  # 替换为实际模型根路径
+    model_root_path = "/root/.gazebo/models/"  # 替换为实际模型根路径
 
     # ---------------------- 1. 生成第一个二维码（可选，保留原有逻辑） ----------------------
     first_qrcode_folders = [

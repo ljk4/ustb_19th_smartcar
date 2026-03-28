@@ -1,0 +1,17 @@
+material 18th_pickup_point
+        {
+          technique
+          {
+            pass
+            {
+              ambient 1 1 1 1.000000
+              diffuse 1 1 1 1.000000
+              specular 0.03 0.03 0.03 1.000000   
+              
+              texture_unit
+              {
+                texture 18th_Pickup_point.png
+              }
+            }
+          }
+        }

@@ -1,4 +1,4 @@
-image: /home/ljk/smart_car/ustb_19th_smartcar/src/ucar_navigation/maps/fin.pgm
+image: fin.pgm
 resolution: 0.01
 origin: [-3.65337, -0.408842, 0.0]
 negate: 0

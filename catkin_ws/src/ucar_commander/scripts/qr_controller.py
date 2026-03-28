@@ -40,7 +40,7 @@ class QRController:
                 resp = self.qr_client(req)
                 
                 if resp.success:
-                    qr_id = resp.id.data
+                    qr_id = resp.id
                     rospy.loginfo(f"QR码识别成功: ID={qr_id}")
                     return qr_id
                 else:

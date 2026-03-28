@@ -1,0 +1,15 @@
+material fruit;dessert
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture fruit;dessert.png
+                scale 1 1
+                rotate 90
+            }
+        }
+    }
+}

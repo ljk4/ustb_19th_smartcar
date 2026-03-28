@@ -1,0 +1,15 @@
+material ADessertBVegetableDFruitBoard
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture A_dessert_B_vegetable_D_fruit.png
+                scale 1 1
+                rotate 0
+            }
+        }
+    }
+}

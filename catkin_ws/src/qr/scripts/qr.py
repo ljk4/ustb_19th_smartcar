@@ -5,7 +5,6 @@ from cv_bridge import CvBridge
 import cv2
 from qr_msgs.srv import qr, qrResponse
 from pyzbar.pyzbar import decode
-from std_msgs.msg import Int8
 
 class QRController:
     def __init__(self):
@@ -56,8 +55,7 @@ class QRController:
             if self.img is None:
                 response = qrResponse()
                 response.success = False
-                response.id = Int8()
-                response.id.data = -1
+                response.id = -1
                 return response
 
             decoded_objects = decode(self.img)
@@ -70,8 +68,7 @@ class QRController:
                 if data in self.QR_MAPPING:
                     response = qrResponse()
                     response.success = True
-                    response.id = Int8()
-                    response.id.data = self.QR_MAPPING[data]
+                    response.id = self.QR_MAPPING[data]
                     return response
                 
                 # Try stripping whitespace
@@ -79,21 +76,18 @@ class QRController:
                 if data_stripped in self.QR_MAPPING:
                     response = qrResponse()
                     response.success = True
-                    response.id = Int8()
-                    response.id.data = self.QR_MAPPING[data_stripped]
+                    response.id = self.QR_MAPPING[data_stripped]
                     return response
 
             # If no valid QR found
             response = qrResponse()
             response.success = False
-            response.id = Int8()
-            response.id.data = -1
+            response.id = -1
             return response
         
         response = qrResponse()
         response.success = False
-        response.id = Int8()
-        response.id.data = -1
+        response.id = -1
         return response
 
 if __name__ == '__main__':

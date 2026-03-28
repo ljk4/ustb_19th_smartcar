@@ -1,0 +1,18 @@
+Gazebo multi-robot simulator, version 11.15.1
+Copyright (C) 2012 Open Source Robotics Foundation.
+Released under the Apache 2 License.
+http://gazebosim.org
+
+
+(1774685350 764629479) [Msg] Waiting for master.
+(1774685350 794575350) [Msg] Connected to gazebo master @ http://127.0.0.1:11345
+(1774685350 794737831) [Msg] Publicized address: 10.255.255.254
+(1774685350 807229199) Loaded .ini file from: "/root/.gazebo/gui.ini"
+(1774685351 488240531) [Wrn] [GuiIface.cc:114] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+(1774685352 312380879) [Err] [InsertModelWidget.cc:403] Missing model.config for model "/root/.gazebo/models/19th_QR_position2"
+(1774685352 312923260) model.config file is missing in directory["/root/.gazebo/models/19th_QR_position2"]
+(1774685354 241368252) No spacenav daemon found. Spacenav functionality is disabled
+(1774685555 791135639) [Wrn] [ModelDatabase.cc:213] Unable to connect to model database using [http://models.gazebosim.org/cafe/model.config]. Only locally installed models will be available.
+(1774685555 791321818) [Err] [ModelDatabase.cc:395] Unable to get model name[http://models.gazebosim.org/cafe]
+(1774685583 310596402) [Wrn] [ModelDatabase.cc:213] Unable to connect to model database using [http://models.gazebosim.org/round_tin_base/model.config]. Only locally installed models will be available.
+(1774685583 311389252) [Err] [ModelDatabase.cc:395] Unable to get model name[http://models.gazebosim.org/round_tin_base]

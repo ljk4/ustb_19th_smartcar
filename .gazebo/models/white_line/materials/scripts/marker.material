@@ -1,0 +1,15 @@
+material white_line
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture white.png
+        filtering anisotropic
+        max_anisotropy 16
+      }
+    }
+  }
+}

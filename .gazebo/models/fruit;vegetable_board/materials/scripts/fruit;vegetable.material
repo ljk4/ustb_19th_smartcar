@@ -1,0 +1,15 @@
+material MissionBoard
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture fruit;vegetable.png
+                scale 1 1
+                rotate 90
+            }
+        }
+    }
+}

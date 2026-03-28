@@ -73,7 +73,7 @@ class QRController:
                     resp = self.scan_service(True)
                     if resp.success:
                         # Access .data because id is std_msgs/Int8
-                        qr_str = self.ID_TO_STRING.get(resp.id.data)
+                        qr_str = self.ID_TO_STRING.get(resp.id)
                         if qr_str:
                             with self.lock:
                                 self.qr_data = qr_str

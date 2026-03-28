@@ -1,7 +1,7 @@
 <launch>
     <!-- Detection configuration -->
-    <arg name="weights" default="/home/ljk/smart_car/runs/train/smart_car_v1/weights/best.pt" />
-    <arg name="data" default="/home/ljk/smart_car/data/test.yaml" />
+    <arg name="weights" default="$(find yolov5_ros)/weights/best.pt" />
+    <arg name="data" default="$(find yolov5_ros)/weights/test.yaml" />
     <arg name="confidence_threshold" default="0.75" />
     <arg name="iou_threshold" default="0.45" />
     <arg name="maximum_detections" default="1000" />

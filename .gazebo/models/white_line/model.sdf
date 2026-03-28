@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <model name="white_line">
+      <static>true</static>
+      <link name="link">
+         <collision name="collision">
+            <geometry>
+               <box>
+
+                  <normal>0 0 1</normal>
+                  <size>0.5 0.015 0.0001</size>
+
+               </box>
+            </geometry>
+            <surface>
+               <friction>
+                  <ode>
+                     <mu>100</mu>
+                     <mu2>50</mu2>
+                  </ode>
+               </friction>
+            </surface>
+         </collision>
+         <visual name="visual">
+
+            <cast_shadows>true</cast_shadows>
+            <geometry>
+               <box>
+                  <normal>0 0 1</normal>
+                  <size>0.5 0.015 0.0001</size>
+               </box>
+
+            </geometry>
+            <material>
+               <script>
+                  <uri>model://white_line/materials/scripts</uri>
+                  <uri>model://white_line/materials/textures</uri>
+                  <name>white_line</name>
+               </script>
+            </material>
+         </visual>
+      </link>
+   </model>
+</sdf>
