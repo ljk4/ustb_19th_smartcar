@@ -12,11 +12,8 @@ docker rm $CONTAINER_NAME 2>/dev/null || true
 
 echo "启动容器..."
 
-# 注意：Shell 脚本中，反斜杠 \ 后面不能有空格，也不能有注释
-# 所有注释必须写在行首，或者单独一行
 docker run -it --rm \
   --name $CONTAINER_NAME \
-  --runtime=nvidia \
   --gpus all \
   --network host \
   -e DISPLAY=$DISPLAY \

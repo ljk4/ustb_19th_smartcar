@@ -1,4 +1,4 @@
-image: /home/ljk/smart_car/ustb_19th_smartcar/src/ucar_navigation/maps/two_map.pgm
+image: two_map.pgm
 resolution: 0.01
 origin: [-0.225115, -3.23038, 0.0]
 negate: 0

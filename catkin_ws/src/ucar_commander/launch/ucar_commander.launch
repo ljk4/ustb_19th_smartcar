@@ -1,4 +1,0 @@
-<launch>
-    <node pkg="ucar_commander" type="ucar_commander" name="ucar_commander" output="screen" >
-    </node>
-</launch>
