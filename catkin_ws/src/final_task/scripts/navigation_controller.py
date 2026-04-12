@@ -83,18 +83,18 @@ class NavigationController:
         
         # PID控制器（用于直线路段的位置控制）
         self.linear_pid = PIDController(kp=0.6, ki=0.03, kd=0.2, 
-                                       max_output=0.6, min_output=0.2)  
+                                       max_output=5.6, min_output=0.4)  
         self.angular_pid = PIDController(kp=0.8, ki=0.0, kd=0.25,
-                                        max_output=0.6, min_output=0.2) 
+                                        max_output=5.6, min_output=0.4) 
         
         # PID控制参数
         self.pid_position_tolerance = 0.01  # 位置容差保持1cm
         self.pid_angle_tolerance = 0.1      # 角度容差
-        self.pid_control_rate = 20          # 控制频率 (Hz)
+        self.pid_control_rate = 10          # 控制频率 (Hz)
         self.angle_control_threshold = 0.1 # 角度误差阈值(~20度)
         
         # 减速控制参数
-        self.slow_down_distance = 0.3       # 增加减速距离（更早减速）
+        self.slow_down_distance = 0.1       # 增加减速距离（更早减速）
         self.min_speed_ratio = 0.6          # 降低最小速度比例（更慢接近）
         
         # 导航成功标志

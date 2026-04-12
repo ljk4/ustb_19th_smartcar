@@ -4,11 +4,11 @@ Released under the Apache 2 License.
 http://gazebosim.org
 
 
-(1774710984 533095239) [Msg] Waiting for master.
-(1774710984 580588924) [Msg] Connected to gazebo master @ http://127.0.0.1:11345
-(1774710984 580651016) [Msg] Publicized address: 10.255.255.254
-(1774710984 594326192) Loaded .ini file from: "/root/.gazebo/gui.ini"
-(1774710985 76081026) [Wrn] [GuiIface.cc:114] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
-(1774710985 541113347) [Err] [InsertModelWidget.cc:403] Missing model.config for model "/root/.gazebo/models/19th_QR_position2"
-(1774710985 541333255) model.config file is missing in directory["/root/.gazebo/models/19th_QR_position2"]
-(1774710987 384576109) No spacenav daemon found. Spacenav functionality is disabled
+(1775981479 190951967) [Msg] Waiting for master.
+(1775981479 218699737) [Msg] Connected to gazebo master @ http://127.0.0.1:11345
+(1775981479 218774567) [Msg] Publicized address: 10.255.255.254
+(1775981479 221476546) Loaded .ini file from: "/root/.gazebo/gui.ini"
+(1775981479 724085145) [Wrn] [GuiIface.cc:114] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+(1775981479 889436086) [Err] [InsertModelWidget.cc:403] Missing model.config for model "/root/.gazebo/models/19th_QR_position2"
+(1775981479 889877073) model.config file is missing in directory["/root/.gazebo/models/19th_QR_position2"]
+(1775981481 583012057) No spacenav daemon found. Spacenav functionality is disabled
