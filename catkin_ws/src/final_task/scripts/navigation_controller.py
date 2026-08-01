@@ -386,7 +386,7 @@ class NavigationController:
         if current_x is not None:
             distance_to_target = math.sqrt((target_x - current_x)**2 + (target_y - current_y)**2)
             rospy.loginfo(f"当前距离停车点: {distance_to_target:.2f}米")
-            if distance_to_target < 0.5: # 距离小于0.5米
+            if distance_to_target < 0.7: # 距离小于0.7米
                 rospy.logwarn("TEB失败，但目标是停车点且距离很近，切换到PID进行精确对接。")
                 return self.navigate_with_pid(target_x, target_y, target_yaw, timeout=30.0)
         

@@ -20,3 +20,8 @@ catkin_ws/devel
 /test.py
 /test_goal_publisher.py
 /模型训练任务
+
+# Python 编译文件
+*.pyc
+*.pyo
+__pycache__/

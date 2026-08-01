@@ -25,12 +25,12 @@
     <param name="intersection_3" value="[-1.188, 2.380, 0.002]"/>
     
     <param name="intersection_ac_left" value="[-1.202, 1.661, 1.606]"/>
-    <param name="shelf_a" value="[-1.899, 1.664, 3.137]"/>
-    <param name="shelf_c" value="[-0.467, 1.670, -0.001]"/>
+    <param name="shelf_a" value="[-1.899, 1.664, 1.448]"/>
+    <param name="shelf_c" value="[-0.467, 1.670, 1.448]"/>
     
     <param name="intersection_bd_left" value="[-1.170, 0.798, 1.580]"/>
-    <param name="shelf_b" value="[-1.904, 0.801, 3.141]"/>
-    <param name="shelf_d" value="[-0.517, 0.802, -0.001]"/>
+    <param name="shelf_b" value="[-1.904, 0.801, 1.448]"/>
+    <param name="shelf_d" value="[-0.517, 0.802, 1.448]"/>
     
     <param name="intersection_ac_right" value="[0.123, 1.642, -0.001]"/>
     <param name="intersection_bd_right" value="[0.138, 0.766,-0.001]"/>

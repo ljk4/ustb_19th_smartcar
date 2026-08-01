@@ -122,6 +122,45 @@ class UCarCommander:
             rospy.logwarn(f"导航失败: {waypoint_name}")
         
         return success
+
+    def navigate_to_waypoint_pid(self, waypoint_name, timeout=60.0):
+        """强制使用PID导航到指定路径点（忽略路径点默认PID/TEB配置）"""
+        waypoint = self.waypoint_manager.get_waypoint(waypoint_name)
+
+        if waypoint is None:
+            rospy.logerr(f"路径点不存在: {waypoint_name}")
+            return False
+
+        rospy.loginfo(f"[PID直达] 导航到路径点: {waypoint_name} ({waypoint.x:.3f}, {waypoint.y:.3f}, {waypoint.yaw:.3f})")
+        success = self.nav_controller.navigate_with_pid(
+            waypoint.x,
+            waypoint.y,
+            waypoint.yaw,
+            timeout=timeout,
+            max_speed=waypoint.max_speed,
+            position_tolerance=waypoint.position_tolerance,
+            angle_tolerance=waypoint.angle_tolerance,
+        )
+
+        if success is None:
+            rospy.logwarn("[PID直达] PID卡住，执行震动脱困后重试一次")
+            self.nav_controller.vibration_escape(duration=2.0, amplitude=0.3, frequency=2.0)
+            success = self.nav_controller.navigate_with_pid(
+                waypoint.x,
+                waypoint.y,
+                waypoint.yaw,
+                timeout=timeout,
+                max_speed=waypoint.max_speed,
+                position_tolerance=waypoint.position_tolerance,
+                angle_tolerance=waypoint.angle_tolerance,
+            )
+
+        if success:
+            rospy.loginfo(f"[PID直达] 成功到达: {waypoint_name}")
+        else:
+            rospy.logwarn(f"[PID直达] 导航失败: {waypoint_name}")
+
+        return bool(success)
     
     def rotate_relative(self, angle_rad):
         """相对旋转"""
@@ -160,6 +199,43 @@ class UCarCommander:
             self.rotate_relative(math.pi/2) # 左转90回正
             
         return True
+
+    def navigate_to_waypoint_teb(self, waypoint_name, timeout=45.0):
+        """强制使用TEB导航到指定路径点（忽略路径点默认PID/TEB配置）"""
+        waypoint = self.waypoint_manager.get_waypoint(waypoint_name)
+
+        if waypoint is None:
+            rospy.logerr(f"路径点不存在: {waypoint_name}")
+            return False
+
+        rospy.loginfo(f"[TEB直达] 导航到路径点: {waypoint_name} ({waypoint.x:.3f}, {waypoint.y:.3f}, {waypoint.yaw:.3f})")
+        success = self.nav_controller.navigate_with_teb(
+            waypoint.x, waypoint.y, waypoint.yaw, timeout=timeout
+        )
+
+        if success:
+            rospy.loginfo(f"[TEB直达] 成功到达: {waypoint_name}")
+        else:
+            rospy.logwarn(f"[TEB直达] 导航失败: {waypoint_name}")
+
+        return success
+
+    def navigate_direct_to_shelf(self, shelf_name):
+        """从当前位置直接TEB导航到目标货架，取消中间拐点。"""
+        shelf_to_waypoint = {
+            'A': 'shelf_a',
+            'B': 'shelf_b',
+            'C': 'shelf_c',
+            'D': 'shelf_d'
+        }
+
+        waypoint_name = shelf_to_waypoint.get(shelf_name)
+        if not waypoint_name:
+            rospy.logerr(f"无效货架编号: {shelf_name}")
+            return False
+
+        rospy.loginfo(f"直接前往货架 {shelf_name}（TEB）")
+        return self.navigate_to_waypoint_teb(waypoint_name, timeout=45.0)
 
     def navigate_from_shelf_to_exit(self, last_shelf):
         """从最后一个货架导航到出口路口"""
@@ -263,33 +339,22 @@ class UCarCommander:
             return False
             
         elif state == MissionState.NAV_TO_PICKUP:
-            if self.navigate_to_waypoint('pickup'):
+            if self.navigate_to_waypoint_pid('pickup', timeout=60.0):
                 self.state_machine.set_state(MissionState.VOICE_PICKUP)
                 return True
             return False
             
         elif state == MissionState.VOICE_PICKUP:
             if self.voice_controller.play_pickup_list(self.state_machine.pickup_items):
-                self.state_machine.set_state(MissionState.LEAVE_PICKUP_AREA)
+                self.state_machine.set_state(MissionState.NAV_AND_SCAN_INFO)
                 return True
             return True # 即使播报失败也继续
             
         elif state == MissionState.LEAVE_PICKUP_AREA:
-            rospy.loginfo("正在离开任务领取区...")
-            # 向后向右移动
-            cmd = Twist()
-            cmd.linear.x = -0.85
-            cmd.linear.y = -0.55
-            self.nav_controller.cmd_vel_pub.publish(cmd)
-            rospy.sleep(1.0)
-            self.nav_controller.stop_robot()
-            rospy.sleep(0.5)
-            
-            # 旋转90度
-            if self.rotate_relative(-math.pi/2):
-                self.state_machine.set_state(MissionState.NAV_AND_SCAN_INFO) # Change to combined state
-                return True
-            return False
+            # 兼容旧状态：已取消离开任务领取区机动动作，直接进入信息区导航
+            rospy.logwarn("已取消离开任务领取区机动，直接前往信息咨询区（TEB）")
+            self.state_machine.set_state(MissionState.NAV_AND_SCAN_INFO)
+            return True
             
         # elif state == MissionState.ROTATE_RIGHT_90:
         #     if self.rotate_relative(-math.pi/2):
@@ -370,17 +435,9 @@ class UCarCommander:
         elif state == MissionState.CALCULATE_ROUTE:
             rospy.loginfo("计算最优路径...")
             if self.state_machine.calculate_route():
-                # 导航到共同路段
-                if self.navigate_to_waypoint('intersection_2') and \
-                   self.navigate_to_waypoint('intersection_3'):
-                    # 左转90度
-                    rospy.loginfo("在拐点3左转90度")
-                    if self.rotate_relative(math.pi/2):
-                        self.state_machine.set_state(MissionState.NAV_TO_SHELF_1)
-                        return True
-                    else:
-                        rospy.logerr("在拐点3左转失败")
-                        return False
+                rospy.loginfo("已取消信息区到货架的中间拐点，改为TEB直达货架")
+                self.state_machine.set_state(MissionState.NAV_TO_SHELF_1)
+                return True
             else:
                 rospy.logerr("无法计算路线！")
             return False
@@ -388,14 +445,9 @@ class UCarCommander:
         elif state == MissionState.NAV_TO_SHELF_1:
             target_shelf = self.state_machine.target_shelves[0]
             rospy.loginfo(f"开始处理第一个货架: {target_shelf}")
-            
-            # 1. 导航到对应的路口
-            intersection = 'intersection_ac_left' if target_shelf in ['A', 'C'] else 'intersection_bd_left'
-            if not self.navigate_to_waypoint(intersection):
-                return False
-                
-            # 2. 从路口导航到货架
-            if self.navigate_to_shelf(target_shelf):
+
+            # 直接TEB导航到货架，朝向由坐标配置决定
+            if self.navigate_direct_to_shelf(target_shelf):
                 self.state_machine.set_state(MissionState.DETECT_OBJECT_1)
                 return True
             return False
@@ -420,7 +472,7 @@ class UCarCommander:
             if len(self.state_machine.target_shelves) > 1:
                 self.state_machine.set_state(MissionState.NAV_TO_SHELF_2)
             else:
-                self.state_machine.set_state(MissionState.NAV_TO_INTERSECTION_4)
+                self.state_machine.set_state(MissionState.NAV_TO_PARKING)
             return True
             
         elif state == MissionState.NAV_TO_SHELF_2:
@@ -428,21 +480,8 @@ class UCarCommander:
             second_shelf = self.state_machine.target_shelves[1]
             rospy.loginfo(f"开始处理第二个货架: {second_shelf}")
 
-            # 1. 返回第一个货架的路口
-            prev_intersection = 'intersection_ac_left' if first_shelf in ['A', 'C'] else 'intersection_bd_left'
-            if not self.navigate_to_waypoint(prev_intersection):
-                rospy.logerr(f"返回路口 {prev_intersection} 失败")
-                return False
-
-            # 2. 导航到第二个货架的路口
-            next_intersection = 'intersection_ac_left' if second_shelf in ['A', 'C'] else 'intersection_bd_left'
-            if prev_intersection != next_intersection:
-                if not self.navigate_to_waypoint(next_intersection):
-                    rospy.logerr(f"导航到路口 {next_intersection} 失败")
-                    return False
-            
-            # 3. 从路口导航到货架
-            if self.navigate_to_shelf(second_shelf):
+            rospy.loginfo(f"从货架 {first_shelf} 直接前往货架 {second_shelf}（TEB）")
+            if self.navigate_direct_to_shelf(second_shelf):
                 self.state_machine.set_state(MissionState.DETECT_OBJECT_2)
                 return True
             return False
@@ -462,24 +501,23 @@ class UCarCommander:
         elif state == MissionState.VOICE_OBJECT_2:
             obj = self.state_machine.detected_objects[-1]
             self.voice_controller.play_object_detected(obj)
-            self.state_machine.set_state(MissionState.NAV_TO_INTERSECTION_4)
+            self.state_machine.set_state(MissionState.NAV_TO_PARKING)
             return True
             
         elif state == MissionState.NAV_TO_INTERSECTION_4:
-            last_shelf = self.state_machine.target_shelves[-1]
-            if self.navigate_from_shelf_to_exit(last_shelf):
-                self.state_machine.set_state(MissionState.ROTATE_LEFT_90)
-                return True
-            return False
+            # 兼容旧状态：已取消拐点4流程，直接切到停车
+            rospy.logwarn("已取消拐点4流程，直接前往停车区")
+            self.state_machine.set_state(MissionState.NAV_TO_PARKING)
+            return True
             
         elif state == MissionState.ROTATE_LEFT_90:
-            if self.rotate_relative(math.pi/2):
-                self.state_machine.set_state(MissionState.NAV_TO_PARKING)
-                return True
-            return False
+            # 兼容旧状态：已取消左转流程，直接切到停车
+            rospy.logwarn("已取消拐点4后的左转流程，直接前往停车区")
+            self.state_machine.set_state(MissionState.NAV_TO_PARKING)
+            return True
             
         elif state == MissionState.NAV_TO_PARKING:
-            if self.navigate_to_waypoint('parking'):
+            if self.navigate_to_waypoint_teb('parking', timeout=60.0):
                 # 停止计时器
                 try:
                     self.timer_client(False)

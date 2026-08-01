@@ -92,7 +92,7 @@ rosservice call /ucar_commander/start_mission true
 
 #### 构建Docker镜像
 ```bash
-# 在项目根目录下构建镜像
+# 在项目根目录下构建镜像(此命令会花费20分钟左右下载7.6GB的镜像并解压占用21.9GB的空间)
 docker build -t smartcar:noetic .
 # 运行启动脚本
 chmod +x run_docker.sh
@@ -117,7 +117,7 @@ source devel/setup.bash
 cd src/gazebo_pkg/scripts/
 python3 random_board.py
 ```
-或
+之后再新开终端，运行：
 ```bash
 source devel/setup.bash
 rosservice call /ucar_commander/start_mission true

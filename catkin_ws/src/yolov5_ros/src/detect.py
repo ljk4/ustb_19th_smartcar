@@ -177,7 +177,18 @@ class Yolov5Detector:
             cv2.imshow(str(0), im0)
             cv2.waitKey(1)  # 1 millisecond
         if self.publish_image:
-            self.image_pub.publish(self.bridge.cv2_to_imgmsg(im0, "bgr8"))
+            # Some cv_bridge installations shipped with ROS Noetic have an
+            # inconsistent encoding table: encoding_to_cvtype2("bgr8")
+            # returns 16, while cvtype_to_name has no key 16.  Passing
+            # ``bgr8`` directly therefore raises KeyError before the message
+            # is created.  Use passthrough to skip that broken validation,
+            # then set the semantically correct ROS encoding explicitly.
+            im0 = np.ascontiguousarray(im0, dtype=np.uint8)
+            image_msg = self.bridge.cv2_to_imgmsg(
+                im0, encoding="passthrough", header=data.header
+            )
+            image_msg.encoding = "bgr8"
+            self.image_pub.publish(image_msg)
         
 
     @torch.no_grad()
